@@ -27,5 +27,5 @@ LABEL description="Script written in TypeScript that uploads CGM readings from L
 COPY --from=build-stage /usr/src/app /usr/src/app
 
 WORKDIR /usr/src/app
-
+ENTRYPOINT []
 CMD ["node", "dist/index.js"]
