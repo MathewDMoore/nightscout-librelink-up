@@ -28,5 +28,6 @@ COPY --from=build-stage /usr/src/app /usr/src/app
 
 WORKDIR /usr/src/app
 
-CMD [ CMD ["node", "dist/index.js"]
+CMD ["node", "dist/index.js"]
+
 ]
