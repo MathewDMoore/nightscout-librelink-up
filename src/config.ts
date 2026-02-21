@@ -1,4 +1,8 @@
+import dotenvx from "@dotenvx/dotenvx";
 import {LLU_API_ENDPOINTS} from './constants/llu-api-endpoints';
+
+// configure dotenvx, and ignore missing .env file (assume a missing .env file is intentional)
+dotenvx.config({ quiet: true, ignore: ['MISSING_ENV_FILE'] });
 
 function readConfig()
 {
@@ -14,7 +18,7 @@ function readConfig()
         ];
     }
 
-    for (let envName of requiredEnvs)
+    for (const envName of requiredEnvs)
     {
         if (!process.env[envName])
         {
@@ -56,15 +60,16 @@ function readConfig()
         linkUpUsername: process.env.LINK_UP_USERNAME as string,
         linkUpPassword: process.env.LINK_UP_PASSWORD as string,
         linkUpVersion: process.env.LINK_UP_VERSION || "4.16.0",
-
         logLevel: process.env.LOG_LEVEL || 'info',
         singleShot: process.env.SINGLE_SHOT === 'true',
         allData: process.env.ALL_DATA === 'true',
-
         nightscoutApiV3: process.env.NIGHTSCOUT_API_V3 === 'true',
         nightscoutDisableHttps: process.env.NIGHTSCOUT_DISABLE_HTTPS === 'true',
-        nightscoutDevice: process.env.DEVICE_NAME || 'nightscout-librelink-up',
-
+        nightscoutDevice:
+        process.env.NIGHTSCOUT_API_V3 === "true"
+            ? process.env.NIGHTSCOUT_DEVICE_NAME || "freestyle-libre"
+            : process.env.NIGHTSCOUT_DEVICE_NAME || "nightscout-librelink-up",
+        nightscoutApp: process.env.APP || 'librelinkup-to-nightscout-script',
         linkUpRegion: process.env.LINK_UP_REGION || 'EU',
         linkUpTimeInterval: Number(process.env.LINK_UP_TIME_INTERVAL) || 5,
         linkUpConnection: process.env.LINK_UP_CONNECTION as string,
