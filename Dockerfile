@@ -1,31 +1,21 @@
-FROM node:20-bookworm-slim AS build-stage
+FROM node:20-slim
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install app dependencies
-COPY package.json /usr/src/app/
-RUN npm install
+COPY package*.json ./
+RUN npm install --omit=dev
 
-# Bundle app source
-COPY . /usr/src/app
+COPY . .
 
-# Run tests
-RUN npm run test ; \
-    rm -r tests coverage
+EXPOSE 8080
 
-# Compile
-RUN npm run build
+ENTRYPOINT ["node", "src/index.js"]
+git add Dockerfile
+git commit -m "Replace Dockerfile with custom entrypoint version"
+git push
 
-# Remove devel-only dependencies
-RUN npm prune --omit dev
 
-FROM node:20-bookworm-slim
-LABEL description="Script written in TypeScript that uploads CGM readings from LibreLink Up to Nightscout"
 
-COPY --from=build-stage /usr/src/app /usr/src/app
 
-WORKDIR /usr/src/app
-ENTRYPOINT []
-CMD ["node", "dist/index.js"]
+git status
+
