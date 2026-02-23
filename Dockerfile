@@ -1,21 +1,13 @@
-FROM node:20-slim
+FROM node:18-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install --production
 
 COPY . .
 
-EXPOSE 8080
+ENV PORT=1337
+EXPOSE 1337
 
-ENTRYPOINT ["node", "src/index.js"]
-git add Dockerfile
-git commit -m "Replace Dockerfile with custom entrypoint version"
-git push
-
-
-
-
-git status
-
+CMD ["npm", "start"]
